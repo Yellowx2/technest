@@ -53,7 +53,7 @@ public class AccountService implements IAccount {
         if (StringUtils.hasText(account.getName()))
             accountToUpdate.setName(account.getName());
 
-        if (StringUtils.hasText(account.getCurrency().toString()))
+        if (account.getCurrency() != null)
             accountToUpdate.setCurrency(account.getCurrency());
 
         if (account.getBalance() != null)

@@ -19,6 +19,8 @@ To make it simpler, the amount to transfer will be the same as the account of or
 I decided to create a simple Map that contains the exchange rate of Euro and American Dollar in a separate class.
 ## Testing
 ### Service Layer
-1. Basic configuration of tests created with Mockito. Both gets tested.
+1. Basic test configuration created with Mockito. Both gets tested.
+2. Created tests for updateAccount, deleteAccount and createAccount. These tests have a lot of code without assertions
+due to returning void values, and for the sake of covering more code.
 ## Notes
 - Directly committing to master branch in order to avoid losing time.

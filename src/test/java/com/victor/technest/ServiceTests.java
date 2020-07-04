@@ -45,6 +45,41 @@ public class ServiceTests {
         Assertions.assertThrows(ResponseStatusException.class, () -> service.getAccountById(1L));
     }
 
+    @Test
+    void createAccountTest() {
+        Mockito.when(repository.save(Mockito.any(Account.class))).thenReturn(account);
+        service.createAccount(account);
+
+        account.setTreasury(null);
+        Assertions.assertThrows(ResponseStatusException.class, () -> service.createAccount(account));
+
+        account.setTreasury(false);
+        account.setBalance(BigDecimal.TEN.negate());
+        Assertions.assertThrows(ResponseStatusException.class, () -> service.createAccount(account));
+    }
+
+    @Test
+    void updateAccountTest() {
+        Account account2 = new Account();
+        Mockito.when(repository.save(Mockito.any(Account.class))).thenReturn(account);
+        Mockito.when(repository.getOne(Mockito.anyLong())).thenReturn(account);
+        service.updateAccount(account2, 1L);
+        service.updateAccount(account, 1L);
+
+        account.setTreasury(false);
+        account2.setBalance(BigDecimal.TEN.negate());
+        Assertions.assertThrows(ResponseStatusException.class, () -> service.updateAccount(account2, 1L));
+
+        account2.setBalance(BigDecimal.TEN);
+        service.updateAccount(account, 1L);
+    }
+
+    @Test
+    void deleteAccountTest() {
+        Mockito.doNothing().when(repository).deleteById(Mockito.anyLong());
+        service.deleteAccount(1L);
+    }
+
     @BeforeEach
     void init() {
         account = new Account();
