@@ -30,3 +30,4 @@ I'm not going to test the Model layer. It is too monotonous and very time-consum
 ## Notes
 - Directly committing to master branch in order to avoid losing time.
 - Postman collection -> https://www.getpostman.com/collections/b2dd27c9910d710b68fc
+- I made a break of 1 hour and a half for dinner
