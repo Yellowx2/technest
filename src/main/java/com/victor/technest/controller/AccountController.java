@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -26,18 +27,27 @@ public class AccountController {
         return accounts.getAccountById(id);
     }
 
-    @PostMapping("")
-    public void createAccount(@RequestBody Account account) {
+    @PutMapping("")
+    public String createAccount(@RequestBody Account account) {
         accounts.createAccount(account);
+        return "Account with id '" + account.getId() + "' successfully created.";
     }
 
     @PostMapping("/{id}")
-    public void updateAccount(@PathVariable long id, @RequestBody Account account) {
+    public String updateAccount(@PathVariable long id, @RequestBody Account account) {
         accounts.updateAccount(account, id);
+        return "Account with id '" + id + "' successfully updated.";
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAccount(@PathVariable Long id) {
+    public String deleteAccount(@PathVariable Long id) {
         accounts.deleteAccount(id);
+        return "Account with id '" + id + "' successfully deleted.";
+    }
+
+    @PostMapping("/from/{origin}/to/{destination}/{amount}")
+    public String transfer(@PathVariable Long origin, @PathVariable Long destination, @PathVariable BigDecimal amount) {
+        accounts.transfer(origin, destination, amount);
+        return "Transfer between accounts id 1 '" + origin + "' and id 2 '" + destination + "' successfully completed.";
     }
 }

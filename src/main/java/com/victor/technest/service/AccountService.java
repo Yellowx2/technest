@@ -2,6 +2,7 @@ package com.victor.technest.service;
 
 import com.victor.technest.model.Account;
 import com.victor.technest.repository.AccountRepository;
+import com.victor.technest.utils.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -16,6 +18,8 @@ public class AccountService implements IAccount {
 
     @Autowired
     private AccountRepository repository;
+
+    private HashMap<String, BigDecimal> exchange = AccountUtils.createExchangeMap();
 
     @Override
     public List<Account> getAllAccounts() {
@@ -30,7 +34,7 @@ public class AccountService implements IAccount {
     @Override
     public void createAccount(Account account) {
         if (account.getTreasury() == null || (!account.getTreasury() && isNegativeBalance(BigDecimal.ZERO, account.getBalance())))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Treasury set to FALSE can't have negative balance");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Accounts with treasury set to FALSE can't have negative balance");
 
         repository.save(account);
     }
@@ -61,6 +65,28 @@ public class AccountService implements IAccount {
     @Override
     public void deleteAccount(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public void transfer(Long origin, Long destination, BigDecimal amount) {
+        var originAccount = repository.getOne(origin);
+        var destinationAccount = repository.getOne(destination);
+
+        if (!originAccount.getTreasury() && isNegativeBalance(originAccount.getBalance(), amount.negate()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Amount to transfer can't be higher than " + originAccount.getBalance());
+
+        /* Check accounts currency */
+        if (originAccount.getCurrency().equals(destinationAccount.getCurrency())) {
+            originAccount.setBalance(originAccount.getBalance().subtract(amount));
+            destinationAccount.setBalance(destinationAccount.getBalance().add(amount));
+        } else {
+            originAccount.setBalance(originAccount.getBalance().subtract(amount));
+            destinationAccount.setBalance(destinationAccount.getBalance().multiply(
+                    exchange.get(originAccount.getCurrency() + "-" + destinationAccount.getCurrency())
+            ));
+        }
+
+        repository.saveAll(List.of(originAccount, destinationAccount));
     }
 
     private boolean isNegativeBalance(BigDecimal original, BigDecimal add) {
