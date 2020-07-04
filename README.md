@@ -17,5 +17,8 @@ Parameter validation logic for creating and updating accounts.
 4. Transfer service and endpoint created with simple validations of currency and balance.
 To make it simpler, the amount to transfer will be the same as the account of origin.
 I decided to create a simple Map that contains the exchange rate of Euro and American Dollar in a separate class.
+## Testing
+### Service Layer
+1. Basic configuration of tests created with Mockito. Both gets tested.
 ## Notes
 - Directly committing to master branch in order to avoid losing time.
