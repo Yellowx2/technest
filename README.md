@@ -22,5 +22,10 @@ I decided to create a simple Map that contains the exchange rate of Euro and Ame
 1. Basic test configuration created with Mockito. Both gets tested.
 2. Created tests for updateAccount, deleteAccount and createAccount. These tests have a lot of code without assertions
 due to returning void values, and for the sake of covering more code.
+3. Created test for transfer layer, with execution of the method with different parameters for covering more code.
+### Controller Layer
+
+### Model Layer
+I'm not going to test the Model layer. It is too monotonous and very time-consuming.
 ## Notes
 - Directly committing to master branch in order to avoid losing time.

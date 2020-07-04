@@ -4,7 +4,6 @@ import com.victor.technest.model.Account;
 import com.victor.technest.repository.AccountRepository;
 import com.victor.technest.service.AccountService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,6 +77,26 @@ public class ServiceTests {
     void deleteAccountTest() {
         Mockito.doNothing().when(repository).deleteById(Mockito.anyLong());
         service.deleteAccount(1L);
+    }
+
+    @Test
+    void transferTest() {
+        Account account2 = new Account();
+        account2.setBalance(BigDecimal.ONE);
+        account2.setTreasury(false);
+        account2.setCurrency(Currency.getInstance("EUR"));
+
+        // Transfer with identical currency
+        Mockito.when(repository.getOne(1L)).thenReturn(account);
+        Mockito.when(repository.getOne(2L)).thenReturn(account2);
+        service.transfer(1L, 2L, BigDecimal.ONE);
+
+        // Transfer with different currency
+        account2.setCurrency(Currency.getInstance("USD"));
+        service.transfer(1L, 2L, BigDecimal.ONE);
+
+        // Throw exception when treasury is false and balance is insufficient
+        Assertions.assertThrows(ResponseStatusException.class, () -> service.transfer(2L, 1L, BigDecimal.TEN));
     }
 
     @BeforeEach
