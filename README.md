@@ -7,5 +7,7 @@ Changed properties file to YML type. Added in-memory H2 database configuration.
 2. Created basic MVC project structure with its classes: Model, Controller, Repository and Service.
 Model has the constraints required plus an Id to easily select it through a REST call.
 Service has an interface and its respective implementation with a simple method for now.
+3. Created basic endpoints for obtaining, creating, updating and deleting accounts.
+ Parameter validation logic for creating and updating accounts.
 ## Notes
-- Directly committing to master branch in order to go faster.
+- Directly committing to master branch in order to avoid losing time.

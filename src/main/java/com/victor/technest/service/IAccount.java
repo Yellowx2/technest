@@ -3,8 +3,13 @@ package com.victor.technest.service;
 import com.victor.technest.model.Account;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IAccount {
 
-    List<Account> getAllAcounts();
+    List<Account> getAllAccounts();
+    Account getAccountById(Long id);
+    void createAccount(Account account);
+    void updateAccount(Account account, Long id);
+    void deleteAccount(Long id);
 }
