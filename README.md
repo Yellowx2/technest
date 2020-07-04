@@ -24,8 +24,9 @@ I decided to create a simple Map that contains the exchange rate of Euro and Ame
 due to returning void values, and for the sake of covering more code.
 3. Created test for transfer layer, with execution of the method with different parameters for covering more code.
 ### Controller Layer
-
+Tested with SpringBoot controller test Mock (MockMvc), checking HTTP status and body content.
 ### Model Layer
-I'm not going to test the Model layer. It is too monotonous and very time-consuming.
+I'm not going to test the Model layer. It is too monotonous and very time-consuming, while at the same time being much simpler because it does not need Mockito, with JUnit assertions is enough to test it.
 ## Notes
 - Directly committing to master branch in order to avoid losing time.
+- Postman collection -> https://www.getpostman.com/collections/b2dd27c9910d710b68fc

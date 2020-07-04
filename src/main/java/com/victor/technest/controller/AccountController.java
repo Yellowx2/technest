@@ -30,7 +30,7 @@ public class AccountController {
     @PutMapping("")
     public String createAccount(@RequestBody Account account) {
         accounts.createAccount(account);
-        return "Account with id '" + account.getId() + "' successfully created.";
+        return "Account with name '" + account.getName() + "' successfully created.";
     }
 
     @PostMapping("/{id}")
